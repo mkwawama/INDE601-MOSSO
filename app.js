@@ -121,6 +121,60 @@ app.post("/song", isLoggedIn, function (req, res) {
 
 });
 
+
+// Delete song
+app.post("/delete/song", isLoggedIn, function (req, res) {
+	
+	var songid = req.body.songid;
+	var userid = userData._id;
+	var deletequery = {songid: songid, userid:userid}
+	Song.deleteOne(deletequery, function (err, str) {
+		if (err) {
+			console.log(err);
+		}
+		res.json({deletesong:"200"});
+});
+
+});
+
+// update song
+app.post("/update/song", isLoggedIn, function (req, res) {
+	
+	var songid = req.body.songid;
+	var userid = userData._id;
+	var artist = req.body.artist;
+	var location = req.body.location;
+	var updatequery = {songid: songid, userid:userid}
+	var newvalues = { $set: {artist: artist, location: location}};
+	Song.updateOne(updatequery, newvalues, function (err, str) {
+		if (err) {
+			console.log(err);
+		}
+		res.json({updatesong:"200"});
+});
+
+});
+
+// update user
+app.post("/update/user", isLoggedIn, function (req, res) {
+	
+	var password = req.body.password;
+	var fullname = req.body.fullname;
+	var userid = userData._id;
+
+	var updatequery = {userid:userid}
+	var newvalues = { $set: {fullname: fullname}};
+	User.updateOne(updatequery, newvalues, function (err, str) {
+		if (err) {
+			console.log(err);
+		}
+		console.log(str);
+		res.json({updateuser:"200"});
+});
+	
+	
+});
+
 app.get("/song",isLoggedIn, function (req, res){
 
 	var userid = userData._id;
